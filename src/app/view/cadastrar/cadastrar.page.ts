@@ -10,28 +10,38 @@ import { FirebaseService } from 'src/app/model/services/firebase.service';
   styleUrls: ['./cadastrar.page.scss'],
 })
 export class CadastrarPage implements OnInit {
-  public nome! :string;
-  public telefone! : number;
+  public nome: string;
+  public telefone: number;
+  public imagem: any;
 
-  constructor(private alertController: AlertController,
-    private router : Router,
-    private firebase: FirebaseService)  { }
+  constructor(
+    private alertController: AlertController,
+    private router: Router,
+    private firebase: FirebaseService
+  ) {}
 
-  ngOnInit() {
+  ngOnInit() {}
+
+  uploadFile(imagem: any) {
+    this.imagem = imagem.files;
   }
 
-  cadastrar(){
-    if(this.nome && this.telefone){
-      let novo : Contato = new Contato(this.nome, this.telefone);
-      this.firebase.create(novo);
-      this.presentAlert("Sucesso", "Contato Salvo!");
-      this.router.navigate(["/home"]);
-    }else{
-     this.presentAlert("Erro", "Campos Obrigatórios!");
+  cadastrar() {
+    if (this.nome && this.telefone) {
+      let novo: Contato = new Contato(this.nome, this.telefone);
+      if (this.imagem) {
+        this.firebase.uploadImage(this.imagem, novo);
+      } else {
+        this.firebase.create(novo);
+      }
+      this.presentAlert('Sucesso', 'Contato Salvo!');
+      this.router.navigate(['/home']);
+    } else {
+      this.presentAlert('Erro', 'Campos Obrigatórios!');
     }
   }
 
-  async presentAlert(subHeader : string, message : string) {
+  async presentAlert(subHeader: string, message: string) {
     const alert = await this.alertController.create({
       header: 'Agenda de Contatos',
       subHeader: subHeader,
@@ -40,5 +50,4 @@ export class CadastrarPage implements OnInit {
     });
     await alert.present();
   }
-
 }
