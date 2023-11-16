@@ -7,7 +7,12 @@
 <ion-content>
   <ion-list *ngFor="let contato of lista_contatos">
     <ion-item (click)="editar(contato)">
-      <ion-avatar> <img src="{{contato.downloadURL}}" /></ion-avatar>
+      <ion-avatar *ngIf="contato.downloadURL != null"> 
+        <img src="{{contato.downloadURL}}" />
+      </ion-avatar>
+      <ion-avatar *ngIf="contato.downloadURL == null">
+         <img src="assets/icon/default-avatar.jpg"/> 
+      </ion-avatar>
       <ion-label>{{contato.nome}}</ion-label>
     </ion-item>
   </ion-list>

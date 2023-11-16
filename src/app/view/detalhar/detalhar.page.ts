@@ -14,9 +14,9 @@ export class DetalharPage implements OnInit {
   contato: Contato;
   indice: number;
   edicao: boolean = true;
+  public imagem: any;
 
-  constructor(private router: Router,
-    private firebase: FirebaseService) { }
+  constructor(private router: Router, private firebase: FirebaseService) {}
 
   ngOnInit() {
     this.contato = history.state.contato;
@@ -24,23 +24,32 @@ export class DetalharPage implements OnInit {
     this.telefone = this.contato.telefone;
   }
 
-  habilitar(){
-    if(this.edicao){
+  habilitar() {
+    if (this.edicao) {
       this.edicao = false;
-    }else{
+    } else {
       this.edicao = true;
     }
   }
 
-  editar(){
+  uploadFile(imagem: any) {
+    this.imagem = imagem.files;
+  }
+
+  editar() {
     let novo: Contato = new Contato(this.nome, this.telefone);
-    this.firebase.update(novo, this.contato.id);
-    this.router.navigate(["/home"]);
+    novo.id = this.contato.id;
+    if (this.imagem) {
+      this.firebase.uploadImage(this.imagem, this.contato);
+    } else {
+      this.firebase.update(novo, this.contato.id);
+    }
+
+    this.router.navigate(['/home']);
   }
 
-  excluir(){
+  excluir() {
     this.firebase.delete(this.contato);
-    this.router.navigate(["/home"]);
+    this.router.navigate(['/home']);
   }
-
 }
