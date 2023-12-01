@@ -15,7 +15,9 @@ export class CadastrarPage implements OnInit {
   public telefone: number;
   public imagem: any;
 
-  constructor(private router: Router, private firebase: FirebaseService, private alertService: AlertService) {}
+  constructor(private router: Router, 
+    private firebase: FirebaseService, 
+    private alertService: AlertService) {}
 
   ngOnInit() {}
 
