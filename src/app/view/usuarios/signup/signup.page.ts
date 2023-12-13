@@ -7,6 +7,7 @@ import {
 } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AlertService } from 'src/app/common/alert.service';
+import { AuthService } from 'src/app/model/services/auth.service';
 
 @Component({
   selector: 'app-signup',
@@ -19,12 +20,13 @@ export class SignupPage implements OnInit {
   constructor(
     private router: Router,
     private formBuilder: FormBuilder,
-    private alertService: AlertService
+    private alertService: AlertService,
+    private authService: AuthService
   ) {
     this.formCadastrar = new FormGroup({
       email: new FormControl(''),
       senha: new FormControl(''),
-      confSenha: new FormControl('')
+      confSenha: new FormControl(''),
     });
   }
 
@@ -32,7 +34,7 @@ export class SignupPage implements OnInit {
     this.formCadastrar = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
       senha: ['', [Validators.required, Validators.minLength(6)]],
-      confSenha: ['', [Validators.required, Validators.minLength(6)]]
+      confSenha: ['', [Validators.required, Validators.minLength(6)]],
     });
   }
 
@@ -51,8 +53,21 @@ export class SignupPage implements OnInit {
   }
 
   private cadastrar() {
-    //alert de boas vindas
-    this.alertService.presentAlert('Olá', 'Seja bem vindo!');
-    this.router.navigate(['home']);
+    this.authService
+      .signUpWithEmailPassword(
+        this.formCadastrar.value['email'],
+        this.formCadastrar.value['senha']
+      )
+      .then((res) => {
+        this.alertService.presentAlert(
+          'Cadastro',
+          'Cadastro realizado com Sucesso!'
+        );
+        this.router.navigate(['signin']);
+      })
+      .catch((error) => {
+        this.alertService.presentAlert('Cadastro', 'Erro ao Cadastrar!');
+        console.log(error.message);
+      });
   }
 }

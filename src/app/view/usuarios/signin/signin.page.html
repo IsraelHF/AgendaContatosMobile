@@ -17,7 +17,7 @@
       formLogar.get('email')?.errors?.['email']">Formato de email inválido</span>
       <ion-item>
         <ion-label position="floating">Senha</ion-label>
-        <ion-input type="email" formControlName="senha"></ion-input>
+        <ion-input type="password" formControlName="senha"></ion-input>
       </ion-item>
       <!-- Mensagem de erro senha -->
       <span *ngIf="formLogar.get('senha')?.touched && 

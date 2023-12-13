@@ -7,15 +7,21 @@
 <ion-content>
   <ion-list *ngFor="let contato of lista_contatos">
     <ion-item (click)="editar(contato)">
-      <ion-avatar *ngIf="contato.downloadURL != null"> 
+      <ion-avatar *ngIf="contato.downloadURL != null">
         <img src="{{contato.downloadURL}}" />
       </ion-avatar>
       <ion-avatar *ngIf="contato.downloadURL == null">
-         <img src="assets/icon/default-avatar.jpg"/> 
+        <img src="assets/icon/default-avatar.jpg" />
       </ion-avatar>
       <ion-label>{{contato.nome}}</ion-label>
     </ion-item>
   </ion-list>
+
+  <ion-fab horizontal="start" vertical="bottom">
+    <ion-fab-button (click)="logout()" color="danger">
+      <ion-icon name="power-outline"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
 
   <ion-fab horizontal="end" vertical="bottom">
     <ion-fab-button (click)="irParaCadastrar()">
