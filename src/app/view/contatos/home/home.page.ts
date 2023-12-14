@@ -10,14 +10,16 @@ import { AuthService } from 'src/app/model/services/auth.service';
 })
 export class HomePage {
   public lista_contatos: Contato[] = [];
+  public user: any;
 
   constructor(
     private firebase: FirebaseService,
     private authService: AuthService,
     private router: Router
   ) {
-    console.log(this.authService.getUserLogged());
-    this.firebase.read().subscribe((res) => {
+    this.user = this.authService.getUserLogged(); // recupera o usuário logado
+    console.log(this.user);
+    this.firebase.read(this.user.uid).subscribe((res) => {
       this.lista_contatos = res.map((contato) => {
         return {
           id: contato.payload.doc.id,

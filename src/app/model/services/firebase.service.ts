@@ -16,34 +16,44 @@ export class FirebaseService {
     private storage: AngularFireStorage
   ) {}
 
-  read() {
-    return this.firestore.collection(this.PATH).snapshotChanges();
+  read(uid: string) {
+    return this.firestore
+      .collection(this.PATH, ref => ref.where('uid', '==', uid))
+      .snapshotChanges();
   }
 
   create(contato: Contato) {
-    return this.firestore
-      .collection(this.PATH)
-      .add({ nome: contato.nome, telefone: contato.telefone });
+    return this.firestore.collection(this.PATH).add({
+      nome: contato.nome,
+      telefone: contato.telefone,
+      uid: contato.uid,
+    });
   }
 
   createWithAvatar(contato: Contato) {
-    return this.firestore
-      .collection(this.PATH)
-      .add({ nome: contato.nome, telefone: contato.telefone, downloadURL : contato.downloadURL });
+    return this.firestore.collection(this.PATH).add({
+      nome: contato.nome,
+      telefone: contato.telefone,
+      downloadURL: contato.downloadURL,
+      uid: contato.uid,
+    });
   }
 
   update(contato: Contato, id: string) {
-    return this.firestore
-      .collection(this.PATH)
-      .doc(id)
-      .update({ nome: contato.nome, telefone: contato.telefone });
+    return this.firestore.collection(this.PATH).doc(id).update({
+      nome: contato.nome,
+      telefone: contato.telefone,
+      uid: contato.uid,
+    });
   }
 
   updateWithAvatar(contato: Contato, id: string) {
-    return this.firestore
-      .collection(this.PATH)
-      .doc(id)
-      .update({ nome: contato.nome, telefone: contato.telefone, downloadURL : contato.downloadURL });
+    return this.firestore.collection(this.PATH).doc(id).update({
+      nome: contato.nome,
+      telefone: contato.telefone,
+      downloadURL: contato.downloadURL,
+      uid: contato.uid,
+    });
   }
 
   delete(contato: Contato) {
